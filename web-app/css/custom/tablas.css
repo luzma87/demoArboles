@@ -1,0 +1,41 @@
+/*table {*/
+/*font-size : 13px;*/
+/*}*/
+
+/*th {*/
+/*background-color : #1260B3;*/
+/*color            : #ffab19;*/
+/*}*/
+
+/*th.sortable {*/
+/*background-position : right;*/
+/*background-repeat   : no-repeat;*/
+/*background-image    : url(../../images/skin/upDown.png);*/
+/*padding-right       : 1.5em !important;*/
+/*}*/
+
+/*th.asc {*/
+/*background-image : url(../../images/skin/up.png);*/
+/*}*/
+
+/*th.desc {*/
+/*background-image : url(../../images/skin/down.png);*/
+/*}*/
+
+th.sortable a:before {
+    font          : normal normal normal 14px/1 FontAwesome;
+    content       : "\f0dc";
+    padding-right : 5px;
+}
+
+th.asc a:before {
+    font          : normal normal normal 14px/1 FontAwesome;
+    content       : "\f0de";
+    padding-right : 5px;
+}
+
+th.desc a:before {
+    font          : normal normal normal 14px/1 FontAwesome;
+    content       : "\f0dd";
+    padding-right : 5px;
+}

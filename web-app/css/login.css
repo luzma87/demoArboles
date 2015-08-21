@@ -1,0 +1,26 @@
+body {
+    background        : url("../images/yachay_fndo.jpg") no-repeat;
+    /*-webkit-background-size : cover;*/
+    /*-moz-background-size    : cover;*/
+    /*-o-background-size      : cover;*/
+    /*background-size         : cover;*/
+    background-size   : 100% 100%;
+    background-repeat : no-repeat;
+}
+
+.container {
+    border : none;
+}
+
+.img-login {
+    width         : 150px;
+    margin-bottom : 20px;
+}
+
+.tdn-tab-body {
+    text-align : center;
+}
+
+.input-login {
+    margin-bottom : 10px;
+}
