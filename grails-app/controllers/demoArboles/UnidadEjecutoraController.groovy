@@ -113,7 +113,6 @@ class UnidadEjecutoraController /*extends Shield*/ {
             return
         }
         render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de UnidadEjecutora exitosa."
-        return
     } //save para grabar desde ajax
 
     /**
@@ -130,14 +129,11 @@ class UnidadEjecutoraController /*extends Shield*/ {
             try {
                 unidadEjecutoraInstance.delete(flush: true)
                 render "SUCCESS*Eliminación de UnidadEjecutora exitosa."
-                return
             } catch (DataIntegrityViolationException e) {
                 render "ERROR*Ha ocurrido un error al eliminar UnidadEjecutora"
-                return
             }
         } else {
             render "ERROR*No se encontró UnidadEjecutora."
-            return
         }
     } //delete para eliminar via ajax
 
@@ -151,14 +147,11 @@ class UnidadEjecutoraController /*extends Shield*/ {
             def obj = UnidadEjecutora.get(params.id)
             if (obj.codigo.toLowerCase() == params.codigo.toLowerCase()) {
                 render true
-                return
             } else {
                 render UnidadEjecutora.countByCodigoIlike(params.codigo) == 0
-                return
             }
         } else {
             render UnidadEjecutora.countByCodigoIlike(params.codigo) == 0
-            return
         }
     }
 
@@ -322,8 +315,8 @@ class UnidadEjecutoraController /*extends Shield*/ {
             hijos = UnidadEjecutora.findAllByPadreIsNull([sort: 'nombre'])
         } else {
             // se quiere abrir una unidad, se deben cargan las unidades hijas y los usuarios
-            def parts = id.split("_")
-            def node_id = parts[1].toLong()
+            def parts = id.toString().split("_")
+            def node_id = parts[1].toString().toLong()
             def padre = UnidadEjecutora.get(node_id)
             if (padre) {
                 hijos = []
@@ -387,36 +380,51 @@ class UnidadEjecutoraController /*extends Shield*/ {
 
     def arbolSearch_ajax() {
         def search = params.str.trim()
-        def nodosAbrir = []
+        def nodosAbrir = [:]
+        // busco las unidades que coinciden con la búsqueda
         def unidadesMatch = UnidadEjecutora.withCriteria {
             or {
                 ilike("nombre", "%$search%")
                 ilike("codigo", "%$search%")
             }
         }
+        // busco los usuarios que coinciden con la búsqueda
         def usuariosMatch = Persona.withCriteria {
             or {
                 ilike("nombre", "%$search%")
                 ilike("login", "%$search%")
             }
         }
-        usuariosMatch.each { usu ->
-            if (!unidadesMatch.contains(usu.unidad)) {
-                unidadesMatch += usu.unidad
-            }
-        }
+        // para cada unidad voy recorriendo los padres y agregándolos a la lista de nodos que se tienen
+        // que abrir, junto con la cantidad de iteraciones que tomó encontrar cada nodo
+        // guardo solamente la mayor cantidad de iteraciones para cada nodo.
+        // esto permite después ordenar los nodos en el orden que tienen que abrirse en el árbol
+        // para mostrar los resultados encontrados
         unidadesMatch.each { ue ->
             def padre = ue.padre
+            def c = 0
             while (padre) {
                 def id = "#ue_" + padre.id
-                if (!nodosAbrir.contains(id)) {
-                    nodosAbrir += id
+                if (!nodosAbrir[id] || nodosAbrir[id] < c) {
+                    nodosAbrir[id] = c
                 }
+                c++
                 padre = padre.padre
             }
         }
-        nodosAbrir = nodosAbrir.reverse()
-        render new JsonBuilder(nodosAbrir)
+        // para cada usuario agrego la unidad correspondiente en la lista de nodos que se tienen que abrir
+        // después de las unidades porque siempre los usuarios van a ser las últimas hojas del árbol
+        usuariosMatch.each { usu ->
+            def id = "#ue_" + usu.unidadId
+            if (!nodosAbrir[id]) {
+                nodosAbrir[id] = 0
+            }
+        }
+        // los últimos nodos en abrirse son los que se encontraron primero (orden 0) por lo que el ordenamiento
+        // es decendiente
+        nodosAbrir = nodosAbrir.sort { -it.value }
+        def json = new JsonBuilder(nodosAbrir.keySet())
+        render json
     }
 
 }

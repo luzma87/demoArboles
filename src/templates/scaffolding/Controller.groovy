@@ -112,7 +112,6 @@ class ${className}Controller /*extends Shield*/ {
             return
         }
         render "SUCCESS*\${params.id ? 'Actualización' : 'Creación'} de ${className} exitosa."
-        return
     } //save para grabar desde ajax
 
     /**
@@ -124,19 +123,15 @@ class ${className}Controller /*extends Shield*/ {
             def ${propertyName} = ${className}.get(params.id)
             if (!${propertyName}) {
                 render "ERROR*No se encontró ${className}."
-                return
             }
             try {
                 ${propertyName}.delete(flush: true)
                 render "SUCCESS*Eliminación de ${className} exitosa."
-                return
             } catch (DataIntegrityViolationException e) {
                 render "ERROR*Ha ocurrido un error al eliminar ${className}"
-                return
             }
         } else {
             render "ERROR*No se encontró ${className}."
-            return
         }
     } //delete para eliminar via ajax
     <% for (p in props) {
@@ -152,14 +147,11 @@ class ${className}Controller /*extends Shield*/ {
             def obj = ${className}.get(params.id)
             if (obj.${p.name}.toLowerCase() == params.${p.name}.toLowerCase()) {
                 render true
-                return
             } else {
                 render ${className}.countBy${p.name.capitalize()}Ilike(params.${p.name}) == 0
-                return
             }
         } else {
             render ${className}.countBy${p.name.capitalize()}Ilike(params.${p.name}) == 0
-            return
         }
     }
         <% }

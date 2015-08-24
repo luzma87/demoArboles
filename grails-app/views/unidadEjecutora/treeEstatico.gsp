@@ -29,8 +29,22 @@
                 max-height : 330px;
                 overflow   : auto;
             }
+
             #jstree {
                 margin-bottom : 50px;
+                max-height    : 500px;
+                overflow      : auto;
+            }
+
+            .jstree-search {
+                color       : #000 !important;
+                font-weight : normal !important;
+                font-style  : italic !important;
+                background  : #f7ea57 !important;
+            }
+
+            .jstree-search.jstree-clicked {
+                font-weight : bold !important;
             }
         </style>
     </head>
@@ -204,10 +218,37 @@ private String makeTreeEstatico(UnidadEjecutora ue) {
 
             <p>Imports necesarios</p>
             <pre class="brush:html">
-                &lt;script src="&dollar;{resource(dir: 'js/plugins/jstree-3.2.0/dist', file: 'jstree.min.js')}"&gt;&lt;/script&gt;
-                &lt;link href="&dollar;{resource(dir: 'js/plugins/jstree-3.2.0/dist/themes/default', file: 'style.min.css')}" rel="stylesheet"&gt;
+&lt;script src="&dollar;{resource(dir: 'js/plugins/jstree-3.2.0/dist', file: 'jstree.min.js')}"&gt;&lt;/script&gt;
+&lt;link href="&dollar;{resource(dir: 'js/plugins/jstree-3.2.0/dist/themes/default', file: 'style.min.css')}" rel="stylesheet"&gt;
             </pre>
-            
+
+            <p>CSS</p>
+            <pre class="brush: css">
+/* contenedor del árbol. Tiene un max height y overflow auto para que la búsqueda pueda hacer scroll. Si se quita esto
+ * se debe modificar el código de la búsqueda para que haga scroll el body
+ */
+#jstree {
+    margin-bottom : 50px;
+    max-height    : 500px;
+    overflow      : auto;
+}
+
+/* la clase para los resultados de la búsqueda */
+.jstree-search {
+    color       : #000 !important;
+    font-weight : normal !important;
+    font-style  : italic !important;
+    background  : #f7ea57 !important;
+}
+
+/* la clase para el resultado seleccionado de la búsqueda (puede ser con click del mouse o con los botones de
+ * selección de resultado de búsqeda
+ */
+.jstree-search.jstree-clicked {
+    font-weight : bold !important;
+}
+            </pre>
+
             <p>HTML</p>
             <pre class="brush: html">
 &lt;!-- Barra para búsqueda, resultado y leyenda --&gt;
