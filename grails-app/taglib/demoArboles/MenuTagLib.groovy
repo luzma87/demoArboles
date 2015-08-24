@@ -7,19 +7,18 @@ class MenuTagLib {
     static namespace = 'mn'
 
     def menu = { attrs ->
-
-        def items = [:]
-        def usuario, perfil, dpto
-
         def strItems = ""
         if (!attrs.title) {
             attrs.title = "Vesta"
         }
 
-        items = [
+        def items = [
                 "Tipo Institución": ["Lista", createLink(controller: 'tipoInstitucion', action: 'index')],
                 "Unidad Ejecutora": ["Lista", createLink(controller: 'unidadEjecutora', action: 'index')],
                 "Persona"         : ["Lista", createLink(controller: 'persona', action: 'index')],
+                "Árboles"         : ["Inicio", createLink(controller: 'unidadEjecutora', action: 'tree'),
+                                     "Estático", createLink(controller: 'unidadEjecutora', action: 'treeEstatico'),
+                                     "Ajax", createLink(controller: 'unidadEjecutora', action: 'treeAjax')],
         ]
 
         items.each { item ->

@@ -70,6 +70,7 @@
         </div>
 
         <div class="well" id="divInfo">
+            <h4>JsTree con ajax</h4>
             <p>
                 El árbol carga solamente los nodos que tiene que mostrar, se puede seleccionar que nodos comienzan abiertos, la búsqueda es en el servidor.
             </p>

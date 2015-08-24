@@ -69,6 +69,7 @@
         </div>
 
         <div class="well" id="divInfo">
+            <h4>JsTree estático</h4>
             <p>
                 El árbol se carga todo de una sola vez, se puede seleccionar que nodos comienzan abiertos, la búsqueda es local (js).
             </p>
